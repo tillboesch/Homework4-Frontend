@@ -5,7 +5,7 @@
     </div>
     <div class="post-list" v-for="post in posts"   :key="post.index">  
       <div class="post">
-          <h3>  Title:  {{post.title}} </h3>
+          <h3>  Date:  {{post.date}} </h3>
           <p>  <b> Body: </b> {{post.body}} </p>
       </div>
     </div>
@@ -46,7 +46,7 @@ export default {
     },
   }, 
   mounted() {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        fetch('http://localhost:3000/posttable')
         .then((response) => response.json())
         .then(data => this.posts = data)
         .catch(err => console.log(err.message))
