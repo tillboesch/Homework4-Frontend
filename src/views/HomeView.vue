@@ -62,21 +62,16 @@ body{
   background: #fafafa;
   position: relative;
 }
-.post-list{
-  background: rgb(189, 212, 199);
-  margin-bottom: 5px;
-  padding: 3px 5px;
-  border-radius: 10px;
-}
+
 h3{
     margin: 0;
   padding: 0;
   font-family: 'Quicksand', sans-serif;
   color: #444;
-  background: #7e9756;
+  background: lightgray;
 }
 p{
-  background: #796dbd;
+  background: white;
 }
 h1, h2, h3, h4, ul, li, a, input, label, button, div, footer{
   margin: 0;
@@ -102,27 +97,26 @@ label{
   margin: 20px 0 10px;
 }
 button{
-  margin-top: 30px;
-  border-radius: 36px;
-  background: #FEE996;
-  border:0;
-  font-weight: 700;
-  font-size: 0.8em;
-  display: block;
-  padding: 10px 16px;
-  letter-spacing: 2px;
+  background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 nav{
   display: flex;
   align-items: center;
 }
 .post {
-    width: 80%;
-    position: relative;
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid gray;
-    text-align: left;
+  background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    overflow: hidden;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .center {
   margin: auto;
