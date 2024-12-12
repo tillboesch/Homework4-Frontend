@@ -5,7 +5,7 @@
     </div>
     <div class="post-list" v-for="post in posts" :key="post.index">
       <div class="post" @click="openDetailModal(post)">
-        <h3>Date: {{ post.date }}</h3>
+        <h3>Date: {{ formatDate(post.date) }}</h3>
         <p><b>Body:</b> {{ post.body }}</p>
       </div>
     </div>
@@ -180,7 +180,10 @@ export default {
       })
       .catch((err) => console.error("Error deleting post:", err.message));
     },
-
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return new Intl.DateTimeFormat('et-EE', options).format(new Date(dateString));
+    },
 
   },
   mounted() {
