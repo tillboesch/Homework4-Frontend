@@ -13,6 +13,8 @@
     <!-- Add Post Button -->
     <button class="add-post-button" @click="showModal = true">Add Post</button>
 
+    <button class="delete-posts-button" @click="deleteAllPosts">Delete All Posts</button>
+
     <!-- Modal for Adding Post -->
     <div v-if="showModal" class="modal">
       <div class="modal-content">
@@ -57,6 +59,36 @@ export default {
         })
         .catch((e) => console.error("Error logout:", e));
     },
+    deleteAllPosts() {
+      fetch("http://localhost:3000/posttable", {
+        method: "DELETE",
+        headers: {
+        "Content-Type": "application/json" // Optional for DELETE but good practice
+      }
+      })
+        .then((response) => {
+          if (!response.ok) {
+        // Check if the server responded with an error status
+            return response.json().then((error) => {
+            throw new Error(error.message || "Failed to delete posts");
+            });
+          }
+          return response.json(); // Parse JSON response if successful
+        })
+        .then((data) => {
+          console.log(data.message); // Log success message to the console
+          if (data.deletedPosts && data.deletedPosts.length > 0) {
+            console.log(`Deleted posts:`, data.deletedPosts); // Optionally log deleted posts
+          } else {
+            console.log("No posts were deleted (table may have been empty).");
+          }
+          alert(data.message); // Provide feedback to the user
+        })
+        .catch((err) => {
+          console.error("Error deleting posts:", err);
+          alert(`Error: ${err.message}`); // Alert the user about the error
+        });
+      },
     createPost() {
       if (!this.newPostBody.trim()) return;
 
@@ -184,8 +216,17 @@ nav{
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-right: 5px;
 }
-
+.delete-posts-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+}
 .modal {
   position: fixed;
   top: 0;
