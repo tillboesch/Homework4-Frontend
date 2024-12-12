@@ -10,25 +10,10 @@
       </div>
     </div>
 
-    <button class="add-post-button" @click="showModal = true">Add Post</button>
+    <button class="add-post-button" @click="$router.push('/add-post')">Add Post</button>
 
     <button class="delete-posts-button" @click="deleteAllPosts">Delete All Posts</button>
 
-    <!-- Modal for Adding Post -->
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <h3>Add New Post</h3>
-        <textarea
-          v-model="newPostBody"
-          placeholder="Write your post here..."
-          required
-        ></textarea>
-        <div class="modal-actions">
-          <button @click="createPost">Submit</button>
-          <button @click="closeModal">Cancel</button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -82,6 +67,7 @@ export default {
             console.log("No posts were deleted (table may have been empty).");
           }
           alert(data.message); // Provide feedback to the user
+          this.posts = [];
         })
         .catch((err) => {
           console.error("Error deleting posts:", err);
