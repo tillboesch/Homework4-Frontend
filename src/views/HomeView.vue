@@ -10,7 +10,6 @@
       </div>
     </div>
 
-    <!-- Add Post Button -->
     <button class="add-post-button" @click="showModal = true">Add Post</button>
 
     <button class="delete-posts-button" @click="deleteAllPosts">Delete All Posts</button>
@@ -83,7 +82,7 @@ export default {
       fetch("http://localhost:3000/posttable", {
         method: "DELETE",
         headers: {
-        "Content-Type": "application/json" // Optional for DELETE but good practice
+        "Content-Type": "application/json"
       }
       })
         .then((response) => {
@@ -93,12 +92,12 @@ export default {
             throw new Error(error.message || "Failed to delete posts");
             });
           }
-          return response.json(); // Parse JSON response if successful
+          return response.json();
         })
         .then((data) => {
           console.log(data.message); // Log success message to the console
           if (data.deletedPosts && data.deletedPosts.length > 0) {
-            console.log(`Deleted posts:`, data.deletedPosts); // Optionally log deleted posts
+            console.log(`Deleted posts:`, data.deletedPosts); // log deleted posts
           } else {
             console.log("No posts were deleted (table may have been empty).");
           }
@@ -136,7 +135,7 @@ export default {
     },
     openDetailModal(post) {
       this.selectedPost = post;
-      this.selectedPostBody = post.body; // aktueller Body des Posts ins Textfeld laden
+      this.selectedPostBody = post.body;
       this.showDetailModal = true;
     },
     closeDetailModal() {
@@ -159,7 +158,6 @@ export default {
           return response.json();
         })
         .then((updatedPost) => {
-          // Lokal aktualisieren
           const index = this.posts.findIndex(p => p.id === this.selectedPost.id);
           if (index !== -1) {
             this.posts.splice(index, 1, updatedPost);
@@ -176,7 +174,6 @@ export default {
       })
       .then((response) => {
         if (!response.ok) throw new Error("Failed to delete post");
-        // Lokal entfernen
         this.posts = this.posts.filter(post => post.id !== this.selectedPost.id);
         this.closeDetailModal();
       })
