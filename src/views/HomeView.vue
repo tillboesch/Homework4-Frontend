@@ -4,7 +4,7 @@
       <button v-if="authResult" @click="Logout" class="center">Logout</button>
     </div>
     <div class="post-list" v-for="post in posts" :key="post.index">
-      <div class="post">
+      <div class="post" @click="openDetailModal(post)">
         <h3>Date: {{ post.date }}</h3>
         <p><b>Body:</b> {{ post.body }}</p>
       </div>
@@ -30,6 +30,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal for Detailing and Editing a Post -->
+    <div v-if="showDetailModal" class="modal">
+      <div class="modal-content">
+        <h3>Edit Post</h3>
+        <textarea
+          v-model="selectedPostBody"
+          placeholder="Edit your post here..."
+          required
+        ></textarea>
+        <div class="modal-actions">
+          <button @click="updatePost">Update</button>
+          <button @click="deletePost" style="background-color: #dc3545;">Delete</button>
+          <button @click="closeDetailModal" style="background-color: gray;">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +62,9 @@ export default {
       newPostBody: "", 
       authResult: auth.authenticated(),
       showModal: false, 
+      showDetailModal: false,  
+      selectedPost: null,      
+      selectedPostBody: "",    
     };
   },
   methods: {
@@ -114,6 +134,56 @@ export default {
       this.newPostBody = ""; 
       this.showModal = false; 
     },
+    openDetailModal(post) {
+      this.selectedPost = post;
+      this.selectedPostBody = post.body; // aktueller Body des Posts ins Textfeld laden
+      this.showDetailModal = true;
+    },
+    closeDetailModal() {
+      this.selectedPost = null;
+      this.selectedPostBody = "";
+      this.showDetailModal = false;
+    },
+    updatePost() {
+      if (!this.selectedPost || !this.selectedPostBody.trim()) return;
+
+      fetch(`http://localhost:3000/posttable/${this.selectedPost.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ body: this.selectedPostBody }),
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to update post");
+          return response.json();
+        })
+        .then((updatedPost) => {
+          // Lokal aktualisieren
+          const index = this.posts.findIndex(p => p.id === this.selectedPost.id);
+          if (index !== -1) {
+            this.posts.splice(index, 1, updatedPost);
+          }
+          this.closeDetailModal();
+        })
+        .catch((err) => console.error("Error updating post:", err.message));
+    },
+    deletePost() {
+      if (!this.selectedPost) return;
+      
+      fetch(`http://localhost:3000/posttable/${this.selectedPost.id}`, {
+        method: "DELETE"
+      })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to delete post");
+        // Lokal entfernen
+        this.posts = this.posts.filter(post => post.id !== this.selectedPost.id);
+        this.closeDetailModal();
+      })
+      .catch((err) => console.error("Error deleting post:", err.message));
+    },
+
+
   },
   mounted() {
     fetch("http://localhost:3000/posttable")
