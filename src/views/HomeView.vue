@@ -87,6 +87,7 @@ export default {
             console.log("No posts were deleted (table may have been empty).");
           }
           alert(data.message); // Provide feedback to the user
+          this.posts = [];
         })
         .catch((err) => {
           console.error("Error deleting posts:", err);
