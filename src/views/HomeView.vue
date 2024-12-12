@@ -10,25 +10,10 @@
       </div>
     </div>
 
-    <button class="add-post-button" @click="showModal = true">Add Post</button>
+    <button class="add-post-button" @click="$router.push('/add-post')">Add Post</button>
 
     <button class="delete-posts-button" @click="deleteAllPosts">Delete All Posts</button>
 
-    <!-- Modal for Adding Post -->
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <h3>Add New Post</h3>
-        <textarea
-          v-model="newPostBody"
-          placeholder="Write your post here..."
-          required
-        ></textarea>
-        <div class="modal-actions">
-          <button @click="createPost">Submit</button>
-          <button @click="closeModal">Cancel</button>
-        </div>
-      </div>
-    </div>
 
     <!-- Modal for Detailing and Editing a Post -->
     <div v-if="showDetailModal" class="modal">

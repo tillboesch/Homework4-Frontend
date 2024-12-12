@@ -3,7 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
 import auth from "../auth";
-
+import AddPostPage from "@/views/AddPostPage.vue";
 
 
 
@@ -38,6 +38,19 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () =>
             import ( /* webpackChunkName: "contacts" */ "../views/ContactsView.vue"),
+    },
+    {
+        path: "/add-post",
+        name: "AddPostPage",
+        component: AddPostPage,
+        beforeEnter: async (to, from, next) => {
+            let authResult = await auth.authenticated(); // Reuse the same `auth.authenticated` function
+            if (!authResult) {
+                next("/login"); // Redirect unauthenticated users to login
+            } else {
+                next(); // Allow access if authenticated
+            }
+        },
     },
 ];
 
